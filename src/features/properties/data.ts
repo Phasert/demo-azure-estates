@@ -1,15 +1,289 @@
-export type Property = {
-  name: string;
-  location: string;
-  description: string;
-  bedrooms: number;
-  highlights: readonly string[];
-};
+import type { Neighbourhood, Property, PropertyType } from "./types";
 
-export const featuredProperty: Property = {
-  name: "Coral House",
-  location: "West Coast, Barbados",
-  description: "Limestone terraces, shaded outdoor rooms and a pool overlooking the Caribbean Sea define this imagined hillside residence.",
-  bedrooms: 5,
-  highlights: ["Infinity pool", "Ocean views"],
-};
+/*
+ * ILLUSTRATIVE DATA ONLY.
+ * Every listing below is fictional. Names, prices and details were invented
+ * for a portfolio demonstration and do not describe real properties for sale.
+ * Photography: Unsplash (Unsplash License), used to illustrate architecture only.
+ */
+
+const img = (name: string, alt: string, caption?: string) => ({ src: `/images/${name}.webp`, alt, caption });
+
+export const propertyTypes: { value: PropertyType; label: string; blurb: string; image: ReturnType<typeof img> }[] = [
+  { value: "villa", label: "Luxury Villas", blurb: "Private estates with gardens, pools and staff quarters.", image: img("white-villa-pool", "White villa beside a turquoise pool framed by tropical planting") },
+  { value: "contemporary", label: "Contemporary Homes", blurb: "Architect-led residences in glass, timber and stone.", image: img("dusk-garden-house", "Contemporary timber and glass home glowing at dusk") },
+  { value: "beachfront", label: "Beachfront", blurb: "Homes where the sand begins at the terrace edge.", image: img("palm-beach", "Palm tree on a white-sand beach above calm turquoise water") },
+  { value: "investment", label: "Investment", blurb: "Boutique hospitality and income-producing assets.", image: img("resort-lagoon-pool", "Resort lagoon pool surrounded by thatched pavilions") },
+];
+
+export const typeLabel = (t: PropertyType) => propertyTypes.find((p) => p.value === t)?.label ?? t;
+
+export const neighbourhoods: Neighbourhood[] = [
+  {
+    slug: "black-rock",
+    name: "Black Rock Heights",
+    island: "Tobago",
+    summary: "Hillside estates above Tobago's quiet western coves.",
+    description: "Slow mornings, sea breezes and sunset views over the Caribbean define this elevated enclave, minutes from golf, reef and the island's best beaches.",
+    image: img("clifftop-pool", "Clifftop infinity pool overlooking a deep blue sea"),
+    highlights: ["Sunset-facing slopes", "Close to championship golf", "Protected reef nearby"],
+    inspiredBy: { area: "Black Rock, Tobago", lat: 11.205, lon: -60.78 },
+  },
+  {
+    slug: "maraval-hills",
+    name: "Maraval Hills",
+    island: "Trinidad",
+    summary: "Leafy valley living, minutes from Port of Spain.",
+    description: "Lush ridgelines and cool evening air make Maraval a favourite for families wanting space and greenery without leaving the capital behind.",
+    image: img("dusk-garden-house", "Contemporary home under a mature tree at dusk"),
+    highlights: ["Cooler valley climate", "International schools", "Rainforest trails"],
+    inspiredBy: { area: "Maraval, Trinidad", lat: 10.7, lon: -61.52 },
+  },
+  {
+    slug: "westmoorings",
+    name: "Westmoorings by the Sea",
+    island: "Trinidad",
+    summary: "Waterfront residences on the Gulf of Paria.",
+    description: "Marinas, sea walls and contemporary architecture give Westmoorings its polished, nautical character, with the city a short drive east.",
+    image: img("white-villa-terrace", "White modernist villa with pool terrace under a bright sky"),
+    highlights: ["Marina access", "Gated communities", "Waterfront dining"],
+    inspiredBy: { area: "Westmoorings, Trinidad", lat: 10.68, lon: -61.565 },
+  },
+  {
+    slug: "castara",
+    name: "Castara Bay",
+    island: "Tobago",
+    summary: "A fishing-village bay with an unhurried rhythm.",
+    description: "Green hills roll down to a crescent of golden sand. Castara rewards those who value authenticity, privacy and the sound of the sea.",
+    image: img("overwater-pavilion", "Thatched pavilion on a sandbar beside shallow turquoise water"),
+    highlights: ["Village atmosphere", "Snorkelling reef", "Boutique hospitality demand"],
+    inspiredBy: { area: "Castara, Tobago", lat: 11.28, lon: -60.7 },
+  },
+];
+
+export const properties: Property[] = [
+  {
+    id: "ae-001",
+    slug: "coral-house",
+    title: "Coral House",
+    type: "villa",
+    neighbourhood: "black-rock",
+    location: "Black Rock Heights, Tobago",
+    priceTTD: 28_500_000,
+    bedrooms: 5,
+    bathrooms: 6,
+    sizeSqFt: 7_400,
+    lotSqFt: 32_000,
+    yearCompleted: 2023,
+    tagline: "Limestone terraces suspended above the Caribbean Sea.",
+    description: [
+      "Set into a west-facing hillside, Coral House unfolds across three gently stepped levels, each opening onto shaded terraces and uninterrupted ocean views.",
+      "Hand-finished coral stone, pale oak and floor-to-ceiling glazing create interiors that feel calm, cool and entirely connected to the landscape. The principal suite occupies its own wing with a private plunge pool.",
+    ],
+    amenities: ["Infinity-edge pool", "Private plunge pool", "Outdoor kitchen", "Wine room", "Staff quarters", "Solar array & battery", "Gated entry", "Ocean views"],
+    images: [
+      img("hero-villa", "White villa with cantilevered terraces above a long reflecting pool", "Exterior · Pool terrace"),
+      img("living-timber-wall", "Open living room with timber feature wall and soft seating", "Living room"),
+      img("bedroom-dark", "Principal bedroom with upholstered bed and sculptural lighting", "Principal suite"),
+      img("clifftop-pool", "Clifftop pool overlooking the sea", "The view"),
+      img("coral-house", "Coral House terrace at golden hour", "Golden hour"),
+    ],
+    featured: true,
+    listedOn: "2026-10-02",
+  },
+  {
+    id: "ae-002",
+    slug: "villa-solenne",
+    title: "Villa Solenne",
+    type: "villa",
+    neighbourhood: "westmoorings",
+    location: "Westmoorings by the Sea, Trinidad",
+    priceTTD: 19_750_000,
+    bedrooms: 6,
+    bathrooms: 7,
+    sizeSqFt: 8_100,
+    lotSqFt: 21_500,
+    yearCompleted: 2021,
+    tagline: "A whitewashed modernist retreat built for entertaining.",
+    description: [
+      "Crisp white volumes frame a resort-scale pool deck at Villa Solenne, a residence designed around long lunches and late evenings.",
+      "Interiors are bright and gallery-like, with a double-height living hall, chef's kitchen and a rooftop lounge facing the Gulf of Paria.",
+    ],
+    amenities: ["Resort-style pool", "Rooftop lounge", "Chef's kitchen", "Home cinema", "Four-car garage", "Smart home system", "Guest cottage"],
+    images: [
+      img("white-villa-terrace", "White modernist villa with pool and sun deck", "Exterior"),
+      img("open-living-stair", "Open-plan living room with floating timber staircase", "Living hall"),
+      img("bedroom-white", "Bright bedroom with glazed doors to a terrace", "Guest suite"),
+      img("white-villa-garden", "White villa facade above a garden pool", "Garden pool"),
+    ],
+    featured: true,
+    listedOn: "2026-09-14",
+  },
+  {
+    id: "ae-003",
+    slug: "the-glass-pavilion",
+    title: "The Glass Pavilion",
+    type: "contemporary",
+    neighbourhood: "maraval-hills",
+    location: "Maraval Hills, Trinidad",
+    priceTTD: 12_900_000,
+    bedrooms: 4,
+    bathrooms: 4,
+    sizeSqFt: 4_850,
+    lotSqFt: 14_000,
+    yearCompleted: 2024,
+    tagline: "Single-level living that dissolves into the garden.",
+    description: [
+      "A slender flat roof floats above walls of sliding glass, allowing the living spaces to open entirely onto a reflecting lap pool and mature tropical planting.",
+      "Polished concrete floors, warm timber joinery and a covered outdoor dining room make this a home for easy, year-round indoor–outdoor living.",
+    ],
+    amenities: ["Lap pool", "Covered outdoor dining", "Polished concrete floors", "Home office", "EV charging", "Rainwater harvesting"],
+    images: [
+      img("glass-pavilion-pool", "Glass pavilion home opening onto a pool", "Exterior · Pool"),
+      img("living-room-light", "Sunlit living room with gallery wall and leather sofa", "Living room"),
+      img("reading-corner", "Reading corner with yellow armchair and oak floor", "Study"),
+      img("bedroom-mirror", "Calm bedroom with tufted headboard and gilded mirror", "Bedroom"),
+    ],
+    listedOn: "2026-11-01",
+  },
+  {
+    id: "ae-004",
+    slug: "casa-tamarind",
+    title: "Casa Tamarind",
+    type: "contemporary",
+    neighbourhood: "maraval-hills",
+    location: "Maraval Hills, Trinidad",
+    priceTTD: 8_650_000,
+    bedrooms: 3,
+    bathrooms: 3,
+    sizeSqFt: 3_600,
+    yearCompleted: 2022,
+    tagline: "Timber, shadow and a courtyard beneath an old tamarind.",
+    description: [
+      "Charred timber cladding and deep window reveals give Casa Tamarind a sculptural presence beneath its namesake tree.",
+      "Inside, a sequence of light-filled rooms wraps a private courtyard, with a narrow lap pool tracing the boundary wall.",
+    ],
+    amenities: ["Courtyard garden", "Lap pool", "Timber cladding", "Open-plan kitchen", "Covered parking"],
+    images: [
+      img("dusk-garden-house", "Contemporary home glowing at dusk beneath a large tree", "Exterior · Dusk"),
+      img("timber-courtyard", "Timber-clad entrance courtyard", "Entrance"),
+      img("lap-pool", "Narrow lap pool beside a contemporary facade", "Lap pool"),
+      img("dark-facade-dusk", "Dark facade with warm interior light", "Evening"),
+    ],
+    listedOn: "2026-08-22",
+  },
+  {
+    id: "ae-005",
+    slug: "sea-grape-cottage",
+    title: "Sea Grape Beach House",
+    type: "beachfront",
+    neighbourhood: "castara",
+    location: "Castara Bay, Tobago",
+    priceTTD: 15_400_000,
+    bedrooms: 4,
+    bathrooms: 5,
+    sizeSqFt: 4_200,
+    lotSqFt: 18_000,
+    yearCompleted: 2019,
+    tagline: "Bare feet from bedroom to shoreline.",
+    description: [
+      "Sea Grape sits directly on a sheltered crescent of sand, its wraparound verandah shaded by mature sea grape trees.",
+      "Breezy, plantation-inspired rooms open on three sides, and a timber deck steps straight down to the beach.",
+    ],
+    amenities: ["Direct beach access", "Wraparound verandah", "Outdoor shower", "Kayak storage", "Plunge pool", "Hurricane shutters"],
+    images: [
+      img("plantation-house", "Two-storey plantation-style house with pool and palms", "Exterior"),
+      img("palm-beach", "Palm-lined beach in front of the house", "The beach"),
+      img("bedroom-classic", "Classic bedroom with upholstered headboard", "Bedroom"),
+      img("beach-sunrise", "Sunrise over a calm turquoise shoreline", "Morning"),
+    ],
+    featured: true,
+    listedOn: "2026-07-30",
+  },
+  {
+    id: "ae-006",
+    slug: "lagoon-suites",
+    title: "Lagoon Suites",
+    type: "investment",
+    neighbourhood: "castara",
+    location: "Castara Bay, Tobago",
+    priceTTD: 46_000_000,
+    bedrooms: 12,
+    bathrooms: 14,
+    sizeSqFt: 16_500,
+    lotSqFt: 85_000,
+    yearCompleted: 2018,
+    tagline: "A twelve-key boutique retreat on its own lagoon.",
+    description: [
+      "Lagoon Suites is an illustrative boutique hospitality asset: twelve thatched suites set around a freeform lagoon pool, with a restaurant pavilion and beach bar.",
+      "Presented as a turnkey operating business in this demo, with scope for additional villas on the undeveloped upper parcel.",
+    ],
+    amenities: ["12 guest suites", "Lagoon pool", "Restaurant pavilion", "Beach bar", "Spa treatment rooms", "Expansion land", "Back-up generation"],
+    images: [
+      img("resort-lagoon-pool", "Resort lagoon pool surrounded by thatched pavilions", "The lagoon"),
+      img("timber-pool-deck", "Timber pool deck with loungers and a pitched-roof lodge", "Pool deck"),
+      img("ocean-suite", "Suite interior with glazed walls facing the ocean", "Ocean suite"),
+      img("night-pool-pavilion", "Pool pavilion illuminated at night", "Evening"),
+    ],
+    listedOn: "2026-06-11",
+  },
+  {
+    id: "ae-007",
+    slug: "horizon-house",
+    title: "Horizon House",
+    type: "beachfront",
+    neighbourhood: "black-rock",
+    location: "Black Rock Heights, Tobago",
+    priceTTD: 22_300_000,
+    bedrooms: 5,
+    bathrooms: 5,
+    sizeSqFt: 5_900,
+    lotSqFt: 24_000,
+    yearCompleted: 2025,
+    tagline: "A clifftop sunset deck above a private cove.",
+    description: [
+      "Horizon House is orientated entirely toward the setting sun. Its hardwood decks cantilever over the cliff edge with steps down to a secluded cove.",
+      "Inside, a long gallery connects five suites, each with its own terrace and outdoor bathing area.",
+    ],
+    amenities: ["Private cove access", "Cantilevered sunset deck", "Infinity pool", "Outdoor bathing", "Gym", "Boat mooring"],
+    images: [
+      img("sunset-deck", "Hardwood deck and pool at sunset", "Sunset deck"),
+      img("clifftop-pool", "Pool overlooking the sea from a clifftop", "Pool"),
+      img("bedroom-white", "Suite with doors opening to a terrace", "Suite"),
+      img("beach-sunrise", "Soft light over the cove", "The cove"),
+    ],
+    listedOn: "2026-10-28",
+  },
+  {
+    id: "ae-008",
+    slug: "marina-residences",
+    title: "Marina Residences",
+    type: "investment",
+    neighbourhood: "westmoorings",
+    location: "Westmoorings by the Sea, Trinidad",
+    priceTTD: 6_250_000,
+    bedrooms: 3,
+    bathrooms: 3,
+    sizeSqFt: 2_400,
+    yearCompleted: 2024,
+    tagline: "Lock-up-and-leave residences with rental appeal.",
+    description: [
+      "An illustrative pair of contemporary townhomes close to the marina, presented as a long-let or short-stay investment.",
+      "Each home has a private garden, shared pool and secure parking.",
+    ],
+    amenities: ["Shared pool", "Secure parking", "Private garden", "Rental-ready furnishings", "Marina proximity"],
+    images: [
+      img("modern-facade", "Contemporary townhouse with timber accent panel", "Exterior"),
+      img("contemporary-pool-house", "Contemporary home with garden pool", "Shared pool"),
+      img("open-living-stair", "Open living room with staircase", "Living"),
+    ],
+    listedOn: "2026-05-19",
+  },
+];
+
+/* Accessors — swap these for database queries later. */
+export const getAllProperties = () => properties;
+export const getPropertyBySlug = (slug: string) => properties.find((p) => p.slug === slug);
+export const getFeaturedProperties = () => properties.filter((p) => p.featured);
+export const getNeighbourhood = (slug: string) => neighbourhoods.find((n) => n.slug === slug);
+export const getPropertiesInNeighbourhood = (slug: string) => properties.filter((p) => p.neighbourhood === slug);
